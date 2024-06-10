@@ -1,4 +1,5 @@
 import 'package:cafeteria_management_system/pages/home_page.dart';
+import 'package:cafeteria_management_system/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,6 +14,11 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: "Cafeteria Management System",
       debugShowCheckedModeBanner: false,
+      home: HomePage(),
+      routes: {
+        // '/': (context) => LoginPage(),
+        '/home': (context) => HomePage()
+      },
     );
   }
 }
