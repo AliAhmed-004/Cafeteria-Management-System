@@ -1,3 +1,5 @@
+import 'package:cafeteria_management_system/services/cart_model.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class MenuItem {
@@ -37,18 +39,18 @@ class MenuItems extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildMenuSection('Breakfast', breakfastItems),
+            _buildMenuSection('Breakfast', breakfastItems, context),
             const SizedBox(height: 16),
-            _buildMenuSection('Lunch', lunchItems),
+            _buildMenuSection('Lunch', lunchItems, context),
             const SizedBox(height: 16),
-            _buildMenuSection('Snacks', snackItems),
+            _buildMenuSection('Snacks', snackItems, context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMenuSection(String title, List<MenuItem> items) {
+  Widget _buildMenuSection(String title, List<MenuItem> items, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,13 +64,21 @@ class MenuItems extends StatelessWidget {
         const SizedBox(height: 8),
         Column(
           children: items.map((item) => ListTile(
+            onTap: () {
+            Provider.of<CartProvider>(context, listen: false).addItem(
+              CartItem(item.title, item.imagePath, item.price),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('${item.title} added to cart')),
+            );
+          },
             leading: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(1.0),
               child: Image.asset(
                 item.imagePath,
-                // width: 100,
-                height: 300,
-                fit: BoxFit.cover,
+                //TODO: Resize the Images to look more beautiful
+                height: 200,
+                fit: BoxFit.fill,
               ),
             ),
             title: Text("${item.title} - Rs ${item.price}"),
